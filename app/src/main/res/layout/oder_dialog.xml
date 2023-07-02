@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@color/primary_color">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Đơn hàng của bạn được đặt thành công\nChúng tôi sẽ giao cho bạn sớm nhất"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+
+        <Button
+            android:id="@+id/tieptuc"
+            android:layout_width="150dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="150dp"
+            android:background="@color/second_color"
+            android:text="Tiếp tục mua hàng" />
+
+        <Button
+            android:id="@+id/btnExit"
+            android:layout_width="150dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="220dp"
+            android:layout_marginTop="150dp"
+            android:background="@color/second_color"
+            android:text="Đến đơn của bạn" />
+    </RelativeLayout>
+</LinearLayout>
