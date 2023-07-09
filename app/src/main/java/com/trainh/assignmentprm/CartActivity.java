@@ -48,8 +48,8 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.Selec
     TextView txtMoney;
     Button btnThanhToan;
 
-    String PublishableKey = "";
-    String SecretKey = "";
+    String PublishableKey = "pk_test_51NQtVQFmQYmIg1cd39ZYMRbaXk8GgeTqlXB5mqrDUlWxTSCIjXUZEK4TGX8ywOxGUX9weXOPC2JqKaHPr58thmiV00t8Sg69Cg";
+    String SecretKey = "sk_test_51NQtVQFmQYmIg1cdI1P7W71mE8Y0C8SXQGvuxzVqPdALltwNaZngMadOUx1RPgtFKoQWSoBflvjzJVBBNz1P5qvO0009NpsBIB";
     String CustomerId;
     String EphericalKey;
     String ClientSecret;

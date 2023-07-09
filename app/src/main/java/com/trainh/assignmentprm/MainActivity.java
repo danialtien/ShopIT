@@ -1,10 +1,6 @@
 package com.trainh.assignmentprm;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,13 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.trainh.assignmentprm.adapter.ProductAdapter;
+import com.trainh.assignmentprm.activity.MyHomeActivity;
 import com.trainh.assignmentprm.database.Database;
 import com.trainh.assignmentprm.entities.Account;
 import com.trainh.assignmentprm.entities.Product;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         database = new Database(getApplicationContext());
-
 
         edUsername = (EditText) findViewById(R.id.etUsername);
         edPassword = (EditText) findViewById(R.id.etPassword);
@@ -59,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString("username", username);
                     editor.apply();
-                    Intent intent = new Intent(v.getContext(), HomeActivity.class);
+                    Intent intent = new Intent(v.getContext(), MyHomeActivity.class);
                     startActivity(intent);
                 } else {
                     Toast.makeText(MainActivity.this, "Không đúng", Toast.LENGTH_SHORT).show();
