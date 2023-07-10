@@ -1,6 +1,5 @@
 package com.trainh.assignmentprm.services;
 
-import com.trainh.assignmentprm.model.ProductDTO;
 import com.trainh.assignmentprm.model.ShopDTO;
 
 import retrofit2.Call;

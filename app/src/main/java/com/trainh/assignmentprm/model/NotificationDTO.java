@@ -21,13 +21,6 @@ public class NotificationDTO {
         this.createdAt = createdAt;
     }
 
-    public NotificationDTO(Integer customerId, String title, String description, LocalDateTime createdAt) {
-        this.customerId = customerId;
-        this.title = title;
-        this.description = description;
-        this.createdAt = createdAt;
-    }
-
     public Integer getId() {
         return id;
     }

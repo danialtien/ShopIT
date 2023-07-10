@@ -1,9 +1,10 @@
 package com.trainh.assignmentprm.model;
 
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class CustomerDTO {
+public class CustomerDTO implements Serializable {
     private Integer id;
     private String fullName;
     private String email;
@@ -11,24 +12,13 @@ public class CustomerDTO {
     private String password;
     private String avatar;
     private String address;
-    private LocalDateTime createdAt;
+    private String createdAt;
     private boolean status;
 
     public CustomerDTO() {
     }
 
-    public CustomerDTO(String fullName, String email, String phone, String password, String avatar, String address, LocalDateTime createdAt, boolean status) {
-        this.fullName = fullName;
-        this.email = email;
-        this.phone = phone;
-        this.password = password;
-        this.avatar = avatar;
-        this.address = address;
-        this.createdAt = createdAt;
-        this.status = status;
-    }
-
-    public CustomerDTO(Integer id, String fullName, String email, String phone, String password, String avatar, String address, LocalDateTime createdAt, boolean status) {
+    public CustomerDTO(Integer id, String fullName, String email, String phone, String password, String avatar, String address, String createdAt, boolean status) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -96,11 +86,11 @@ public class CustomerDTO {
         this.address = address;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 

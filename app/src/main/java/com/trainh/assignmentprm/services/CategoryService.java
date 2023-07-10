@@ -1,7 +1,6 @@
 package com.trainh.assignmentprm.services;
 
 import com.trainh.assignmentprm.model.CategoryDTO;
-import com.trainh.assignmentprm.model.ProductDTO;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

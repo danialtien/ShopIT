@@ -13,13 +13,6 @@ public class PaymentDTO {
     public PaymentDTO() {
     }
 
-    public PaymentDTO(Integer orderId, LocalDate paymentDate, BigDecimal amount, String paymentMethod) {
-        this.orderId = orderId;
-        this.paymentDate = paymentDate;
-        this.amount = amount;
-        this.paymentMethod = paymentMethod;
-    }
-
     public PaymentDTO(Integer id, Integer orderId, LocalDate paymentDate, BigDecimal amount, String paymentMethod) {
         this.id = id;
         this.orderId = orderId;

@@ -1,7 +1,6 @@
 package com.trainh.assignmentprm.repository;
 
 import com.trainh.assignmentprm.config.APIClient;
-import com.trainh.assignmentprm.services.ProductService;
 import com.trainh.assignmentprm.services.ShopService;
 
 import retrofit2.Retrofit;

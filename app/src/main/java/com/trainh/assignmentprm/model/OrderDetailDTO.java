@@ -22,13 +22,6 @@ public class OrderDetailDTO {
         this.total = total;
     }
 
-    public OrderDetailDTO(Integer orderId, Integer productId, Integer quantity, BigDecimal price, BigDecimal total) {
-        this.orderId = orderId;
-        this.productId = productId;
-        this.quantity = quantity;
-        this.price = price;
-        this.total = total;
-    }
 
     public Integer getId() {
         return id;

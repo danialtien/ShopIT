@@ -18,13 +18,6 @@ public class ShopDTO {
         this.status = status;
     }
 
-    public ShopDTO(String shopName, String address, String phone, Byte status) {
-        this.shopName = shopName;
-        this.address = address;
-        this.phone = phone;
-        this.status = status;
-    }
-
     public Integer getId() {
         return id;
     }

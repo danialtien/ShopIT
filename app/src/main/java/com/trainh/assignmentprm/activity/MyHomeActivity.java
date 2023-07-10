@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.trainh.assignmentprm.R;
 import com.trainh.assignmentprm.activity.adapter.ProductAdapter2;
