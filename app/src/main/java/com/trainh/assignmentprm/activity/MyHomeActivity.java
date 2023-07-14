@@ -6,9 +6,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.trainh.assignmentprm.CartActivity;
+import com.trainh.assignmentprm.HomeActivity;
 import com.trainh.assignmentprm.R;
 import com.trainh.assignmentprm.activity.adapter.ProductAdapter2;
 import com.trainh.assignmentprm.activity.my_interface.IClickProductListener;
@@ -23,32 +29,65 @@ import retrofit2.Response;
 
 public class MyHomeActivity extends AppCompatActivity {
 
-    List<ProductDTO> productComputer;
+    List<ProductDTO> productDTOList;
     RecyclerView rvComputer;
     ProductAdapter2 productAdapter;
+    TextView tvUsername;
+    ImageView cart;
+    TextView tvNoti;
+    ImageView imgMaps;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home2);
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("username");
+        tvUsername = (TextView) findViewById(R.id.tvUsername);
+        tvUsername.setText(username);
 
         rvComputer = findViewById(R.id.rvComputer);
         LinearLayoutManager linearLayoutManagerComputer = new LinearLayoutManager(this);
-        linearLayoutManagerComputer.setOrientation(LinearLayoutManager.HORIZONTAL);
+        linearLayoutManagerComputer.setOrientation(LinearLayoutManager.VERTICAL);
         rvComputer.setLayoutManager(linearLayoutManagerComputer);
+        cart = (ImageView) findViewById(R.id.ivCart);
+        tvNoti = (TextView) findViewById(R.id.tvNoti);
+        imgMaps = findViewById(R.id.imageView2);
 
-        productComputer = new ArrayList<>();
+
+
+        productDTOList = new ArrayList<>();
         callApiGetProduct();
+
+        tvNoti.setText(String.valueOf(productDTOList.size()));
+
+        imgMaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("https://www.google.com/maps/place/GEARVN+Ho%C3%A0ng+Hoa+Th%C3%A1m/@10.7989457,106.6452575,17z/data=!3m1!4b1!4m5!3m4!1s0x3175294a0c97a181:0x6aece518177f9a92!8m2!3d10.7989404!4d106.6474462"));
+                startActivity(intent);
+            }
+        });
+
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyHomeActivity.this, CartActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
 
     private void callApiGetProduct(){
 
         ProductRepository.getService().getAll().enqueue(new Callback<List<ProductDTO>>() {
             @Override
             public void onResponse(Call<List<ProductDTO>> call, Response<List<ProductDTO>> response) {
-                productComputer = response.body();
-                productAdapter = new ProductAdapter2(productComputer, new IClickProductListener() {
+                productDTOList = response.body();
+                productAdapter = new ProductAdapter2(productDTOList, new IClickProductListener() {
                     @Override
                     public void onClickItemProduct(ProductDTO dto) {
                         onClickGotoDetail(dto);
