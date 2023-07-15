@@ -8,12 +8,12 @@ public class NotificationDTO {
     private Integer customerId;
     private String title;
     private String description;
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     public NotificationDTO() {
     }
 
-    public NotificationDTO(Integer id, Integer customerId, String title, String description, LocalDateTime createdAt) {
+    public NotificationDTO(Integer id, Integer customerId, String title, String description, String createdAt) {
         this.id = id;
         this.customerId = customerId;
         this.title = title;
@@ -53,11 +53,11 @@ public class NotificationDTO {
         this.description = description;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 }

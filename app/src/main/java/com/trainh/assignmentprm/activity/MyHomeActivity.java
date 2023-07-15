@@ -12,6 +12,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.trainh.assignmentprm.CartActivity;
 import com.trainh.assignmentprm.HomeActivity;
@@ -36,7 +39,7 @@ public class MyHomeActivity extends AppCompatActivity {
     ImageView cart;
     TextView tvNoti;
     ImageView imgMaps;
-
+    ImageView Notify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,8 @@ public class MyHomeActivity extends AppCompatActivity {
         tvUsername.setText(username);
 
         rvComputer = findViewById(R.id.rvComputer);
+        Notify = (ImageView) findViewById(R.id.ivNotification);
+
         LinearLayoutManager linearLayoutManagerComputer = new LinearLayoutManager(this);
         linearLayoutManagerComputer.setOrientation(LinearLayoutManager.VERTICAL);
         rvComputer.setLayoutManager(linearLayoutManagerComputer);
@@ -78,8 +83,18 @@ public class MyHomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
 
+        Notify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = getIntent();
+                int cudId = intent.getIntExtra("customerid", 0);
+                Intent newIntent = new Intent(MyHomeActivity.this, MyNotificationActivity.class);
+                newIntent.putExtra("customerid", cudId);
+                startActivity(newIntent);
+            }
+        });
+    }
 
     private void callApiGetProduct(){
 
@@ -103,9 +118,8 @@ public class MyHomeActivity extends AppCompatActivity {
         });
     }
 
-
     private void onClickGotoDetail(ProductDTO dto) {
-        Intent intent = new Intent(this, MyDetailsActivity.class);
+        Intent intent = new Intent(MyHomeActivity.this, MyDetailsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("object_product", dto);
         intent.putExtras(bundle);

@@ -52,8 +52,15 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/ivNotification"
+                android:layout_width="47dp"
+                android:layout_height="50dp"
+                android:layout_weight="1.6"
+                app:srcCompat="@drawable/notification_icon" />
+
+            <ImageView
                 android:id="@+id/ivCart"
-                android:layout_width="54dp"
+                android:layout_width="47dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/ic_cart_foreground" />

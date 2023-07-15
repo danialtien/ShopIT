@@ -77,6 +77,7 @@ public class MyMainActivity extends AppCompatActivity {
                     if (customerDTO != null) {
                         Intent intent = new Intent(MyMainActivity.this, MyHomeActivity.class);
                         intent.putExtra("username", customerDTO.getFullName());
+                        intent.putExtra("customerid", customerDTO.getId());
                         startActivity(intent);
                     }
                 } else {
@@ -88,6 +89,7 @@ public class MyMainActivity extends AppCompatActivity {
             public void onFailure(Call<CustomerDTO> call, Throwable t) {
                 // Dismiss loading indicator
                 progressDialog.dismiss();
+                Log.e("Login User Error", t.toString());
                 Toast.makeText(MyMainActivity.this, "Can not connect to server", Toast.LENGTH_SHORT).show();
             }
         });
