@@ -1,8 +1,9 @@
 package com.trainh.assignmentprm.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class OrderDetailDTO {
+public class OrderDetailDTO implements Serializable {
     private Integer id;
     private Integer orderId;
     private Integer productId;

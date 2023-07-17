@@ -1,10 +1,11 @@
 package com.trainh.assignmentprm.model;
 
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class OrdersDTO {
+public class OrdersDTO implements Serializable {
     private Integer id;
     private Integer customerId;
     private LocalDate orderDate;

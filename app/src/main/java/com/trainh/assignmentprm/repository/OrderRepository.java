@@ -7,7 +7,6 @@ import retrofit2.Retrofit;
 
 public class OrderRepository {
     public static OrderService getService() {
-        Retrofit retrofit = APIClient.getClient();
-        return retrofit.create(OrderService.class);
+        return APIClient.getClient().create(OrderService.class);
     }
 }
