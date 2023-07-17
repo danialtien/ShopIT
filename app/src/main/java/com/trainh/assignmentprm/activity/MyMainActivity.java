@@ -12,13 +12,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.trainh.assignmentprm.R;
-import com.trainh.assignmentprm.Register;
 import com.trainh.assignmentprm.model.CustomerDTO;
+import com.trainh.assignmentprm.model.OrderDetailDTO;
+import com.trainh.assignmentprm.model.OrdersDTO;
+import com.trainh.assignmentprm.model.ProductDTO;
 import com.trainh.assignmentprm.model.User;
 import com.trainh.assignmentprm.repository.CustomerRepository;
+import com.trainh.assignmentprm.repository.OrderDetailRepository;
+import com.trainh.assignmentprm.repository.OrderRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +39,7 @@ public class MyMainActivity extends AppCompatActivity {
     public static List<CustomerDTO> listCustomer;
 
     static CustomerDTO customerDTO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,7 @@ public class MyMainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void loginCallAPI(User user) {
         // Show loading indicator
@@ -108,5 +115,4 @@ public class MyMainActivity extends AppCompatActivity {
             }
         });
     }
-
 }

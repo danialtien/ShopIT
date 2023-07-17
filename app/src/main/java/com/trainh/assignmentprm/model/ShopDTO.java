@@ -1,6 +1,8 @@
 package com.trainh.assignmentprm.model;
 
-public class ShopDTO {
+import java.io.Serializable;
+
+public class ShopDTO  implements Serializable {
     private Integer id;
     private String shopName;
     private String address;

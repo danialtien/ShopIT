@@ -1,7 +1,9 @@
 package com.trainh.assignmentprm.model;
 
 
-public class CategoryDTO {
+import java.io.Serializable;
+
+public class CategoryDTO implements Serializable {
     private Integer id;
     private String categoryName;
 

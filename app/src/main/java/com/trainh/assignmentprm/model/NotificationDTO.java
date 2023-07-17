@@ -1,9 +1,10 @@
 package com.trainh.assignmentprm.model;
 
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class NotificationDTO {
+public class NotificationDTO implements Serializable {
     private Integer id;
     private Integer customerId;
     private String title;
