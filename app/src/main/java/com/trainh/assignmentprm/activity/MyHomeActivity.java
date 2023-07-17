@@ -48,7 +48,7 @@ public class MyHomeActivity extends AppCompatActivity {
     ImageView cart;
     TextView tvNoti;
     ImageView imgMaps;
-    static OrdersDTO ordersDTO = null;
+    public static OrdersDTO ordersDTO = null;
     static List<OrderDetailDTO> orderDetailDTO = null;
     ImageView Notify;
 
@@ -108,7 +108,7 @@ public class MyHomeActivity extends AppCompatActivity {
         });
     }
 
-    private void loadOrderAPI(Integer id) {
+    public static void loadOrderAPI(Integer id) {
         OrderRepository.getService().getByCustomerId(id).enqueue(new Callback<OrdersDTO>() {
             @Override
             public void onResponse(Call<OrdersDTO> call, Response<OrdersDTO> response) {
@@ -153,7 +153,7 @@ public class MyHomeActivity extends AppCompatActivity {
 
 
 
-    public  List<OrderDetailDTO> loadOrderDetailAPI(OrdersDTO ordersDTO) {
+    public static List<OrderDetailDTO> loadOrderDetailAPI(OrdersDTO ordersDTO) {
         if (ordersDTO.getId() != null) {
             orderDetailDTO = new ArrayList<>();
             OrderDetailRepository.getService().getOrderDetailByOrderID(ordersDTO.getId()).enqueue(new Callback<List<OrderDetailDTO>>() {

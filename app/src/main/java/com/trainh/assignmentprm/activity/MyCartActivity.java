@@ -35,6 +35,7 @@ import com.trainh.assignmentprm.repository.OrderRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +51,8 @@ public class MyCartActivity extends AppCompatActivity implements CartAdapter2.Se
     CartAdapter2 cartAdapter;
     RecyclerView rvCart;
     List<ProductDTO> productList;
-    TextView txtMoney;
+    static List<OrderDetailDTO> detailDTOList;
+    public static TextView txtMoney;
     Button btnThanhToan;
 
     String PublishableKey = "pk_test_51NQtVQFmQYmIg1cd39ZYMRbaXk8GgeTqlXB5mqrDUlWxTSCIjXUZEK4TGX8ywOxGUX9weXOPC2JqKaHPr58thmiV00t8Sg69Cg";
@@ -58,8 +60,9 @@ public class MyCartActivity extends AppCompatActivity implements CartAdapter2.Se
     String CustomerId;
     String EphericalKey;
     String ClientSecret;
-
     PaymentSheet paymentSheet;
+
+    public static BigDecimal TongThanhToan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +78,9 @@ public class MyCartActivity extends AppCompatActivity implements CartAdapter2.Se
 
         rvCart.setLayoutManager(linearLayoutManagerCart);
         productList = getProductComputer();
+        detailDTOList = MyHomeActivity.orderDetailDTO;
         txtMoney.setText(formatter.format(TongTien()));
-        cartAdapter = new CartAdapter2(productList, this);
+        cartAdapter = new CartAdapter2(productList, detailDTOList, this);
         rvCart.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
 
@@ -103,7 +107,7 @@ public class MyCartActivity extends AppCompatActivity implements CartAdapter2.Se
                         try {
                             object = new JSONObject(response);
                             CustomerId = object.getString("id");
-//                    Toast.makeText(CartActivity.this, CustomerId, Toast.LENGTH_SHORT).show();
+
                             getEmphericalKey();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -149,7 +153,6 @@ public class MyCartActivity extends AppCompatActivity implements CartAdapter2.Se
                         try {
                             object = new JSONObject(response);
                             EphericalKey = object.getString("id");
-//                    Toast.makeText(CartActivity.this, EphericalKey, Toast.LENGTH_SHORT).show();
                             getClientSecret(CustomerId, EphericalKey);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -219,7 +222,6 @@ public class MyCartActivity extends AppCompatActivity implements CartAdapter2.Se
                 params.put("amount", "100" + "00");
                 params.put("currency", "USD");
                 params.put("automatic_payment_methods[enabled]", "true");
-
                 return params;
             }
         };
@@ -245,11 +247,12 @@ public class MyCartActivity extends AppCompatActivity implements CartAdapter2.Se
     }
 
 
-    private double TongTien() {
-        double total = 0;
-        for (int i = 0; i < productList.size(); i++) {
-
-            total += productList.get(i).getUnitPrice().doubleValue();
+    public static  BigDecimal TongTien() {
+        MyHomeActivity.loadOrderAPI(MyHomeActivity.ordersDTO.getId());
+        detailDTOList = MyHomeActivity.orderDetailDTO;
+        BigDecimal total = BigDecimal.valueOf(0);
+        for (int i = 0; i < detailDTOList.size(); i++) {
+             total = BigDecimal.valueOf(detailDTOList.get(i).getTotal().doubleValue()).add(total);
         }
         return total;
     }
