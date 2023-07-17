@@ -4,17 +4,36 @@
     package="com.trainh.assignmentprm">
 
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AssignmentPRM"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".activity.MyCartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MyRegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MyHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MyDetailsActivity"
+            android:exported="false" />
         <activity
             android:name=".MapsActivity"
             android:exported="false"
@@ -32,7 +51,11 @@
             android:name=".HomeActivity"
             android:exported="false" />
         <activity
+<<<<<<< HEAD
             android:name=".ProfileActivity"
+=======
+            android:name=".activity.MyMainActivity"
+>>>>>>> main
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,4 +66,3 @@
     </application>
 
 </manifest>
-

@@ -17,8 +17,8 @@ import android.widget.TextView;
 import com.trainh.assignmentprm.adapter.ProductAdapter;
 import com.trainh.assignmentprm.database.Database;
 import com.trainh.assignmentprm.entities.Product;
+import com.trainh.assignmentprm.services.ProductService;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +36,8 @@ public class HomeActivity extends AppCompatActivity implements ProductAdapter.Se
     TextView tvNoti;
     ImageView imgMaps;
 
+    ProductService productService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,7 @@ public class HomeActivity extends AppCompatActivity implements ProductAdapter.Se
         String username = settings.getString("username", "username");
         tvUsername = (TextView) findViewById(R.id.tvUsername);
         tvUsername.setText(username);
+
         productComputer = getProductComputer();
         productKeyboard = getProductKeyboard();
         rvComputer = (RecyclerView) findViewById(R.id.rvComputer);

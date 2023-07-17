@@ -1,14 +1,11 @@
-package com.trainh.assignmentprm;
+package com.trainh.assignmentprm.activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,11 +21,15 @@ import com.android.volley.toolbox.Volley;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
-import com.stripe.net.ApiResource;
+import com.trainh.assignmentprm.R;
 import com.trainh.assignmentprm.adapter.CartAdapter;
-import com.trainh.assignmentprm.adapter.ProductAdapter;
 import com.trainh.assignmentprm.database.Database;
 import com.trainh.assignmentprm.entities.Product;
+import com.trainh.assignmentprm.model.OrderDetailDTO;
+import com.trainh.assignmentprm.model.OrdersDTO;
+import com.trainh.assignmentprm.model.ProductDTO;
+import com.trainh.assignmentprm.repository.OrderDetailRepository;
+import com.trainh.assignmentprm.repository.OrderRepository;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,10 +39,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-public class CartActivity extends AppCompatActivity implements CartAdapter.SelectedProduct{
+import retrofit2.Call;
+import retrofit2.Callback;
 
-    Database database;
+public class MyCartActivity extends AppCompatActivity implements CartAdapter.SelectedProduct {
+
     CartAdapter cartAdapter;
     RecyclerView rvCart;
     List<Product> productList;
@@ -59,11 +63,12 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.Selec
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart);
+        setContentView(R.layout.activity_my_cart);
         DecimalFormat formatter = new DecimalFormat("#,###,###");
-        database = new Database(getApplicationContext());
+
+
         rvCart = (RecyclerView) findViewById(R.id.rvCart);
-        txtMoney =(TextView) findViewById(R.id.txtMoney);
+        txtMoney = (TextView) findViewById(R.id.txtMoney);
         btnThanhToan = (Button) findViewById(R.id.btnthanhtoan);
         LinearLayoutManager linearLayoutManagerCart = new LinearLayoutManager(this);
         linearLayoutManagerCart.setOrientation(LinearLayoutManager.VERTICAL);
@@ -77,7 +82,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.Selec
 
         //Payment
         PaymentConfiguration.init(this, PublishableKey);
-        paymentSheet = new PaymentSheet(this,paymentSheetResult -> {
+        paymentSheet = new PaymentSheet(this, paymentSheetResult -> {
             onPaymentResult(paymentSheetResult);
         });
 
@@ -90,26 +95,26 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.Selec
         });
 
 
-        StringRequest request =new StringRequest(Request.Method.POST, "https://api.stripe.com/v1/customers",
+        StringRequest request = new StringRequest(Request.Method.POST, "https://api.stripe.com/v1/customers",
                 new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                JSONObject object = null;
-                try {
-                    object = new JSONObject(response);
-                    CustomerId = object.getString("id");
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject object = null;
+                        try {
+                            object = new JSONObject(response);
+                            CustomerId = object.getString("id");
 //                    Toast.makeText(CartActivity.this, CustomerId, Toast.LENGTH_SHORT).show();
-                    getEmphericalKey();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
+                            getEmphericalKey();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(CartActivity.this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyCartActivity.this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -125,8 +130,8 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.Selec
     private void paymentFlow() {
         paymentSheet.presentWithPaymentIntent(ClientSecret,
                 new PaymentSheet.Configuration("Thanh toan", new PaymentSheet.CustomerConfiguration(
-                CustomerId,EphericalKey
-        )));
+                        CustomerId, EphericalKey
+                )));
     }
 
     private void onPaymentResult(PaymentSheetResult paymentSheetResult) {
@@ -136,31 +141,31 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.Selec
     }
 
     private void getEmphericalKey() {
-        StringRequest request =new StringRequest(Request.Method.POST, "https://api.stripe.com/v1/ephemeral_keys",
+        StringRequest request = new StringRequest(Request.Method.POST, "https://api.stripe.com/v1/ephemeral_keys",
                 new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                JSONObject object = null;
-                try {
-                    object = new JSONObject(response);
-                    EphericalKey = object.getString("id");
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject object = null;
+                        try {
+                            object = new JSONObject(response);
+                            EphericalKey = object.getString("id");
 //                    Toast.makeText(CartActivity.this, EphericalKey, Toast.LENGTH_SHORT).show();
-                    getClientSecret(CustomerId, EphericalKey);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
+                            getClientSecret(CustomerId, EphericalKey);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(CartActivity.this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyCartActivity.this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
                 header.put("Authorization", "Bearer " + SecretKey);
-                header.put("Stripe-Version","2022-11-15");
+                header.put("Stripe-Version", "2022-11-15");
                 return header;
             }
 
@@ -180,7 +185,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.Selec
 
     private void getClientSecret(String customerId, String ephericalKey) {
 
-        StringRequest request =new StringRequest(Request.Method.POST, "https://api.stripe.com/v1/payment_intents", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, "https://api.stripe.com/v1/payment_intents", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 JSONObject object = null;
@@ -196,9 +201,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.Selec
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(CartActivity.this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyCartActivity.this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> header = new HashMap<>();
@@ -211,7 +216,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.Selec
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("customer", CustomerId);
-                params.put("amount", "100"+"00");
+                params.put("amount", "100" + "00");
                 params.put("currency", "USD");
                 params.put("automatic_payment_methods[enabled]", "true");
 
@@ -225,18 +230,19 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.Selec
 
     private List<Product> getProductComputer() {
         List<Product> products = new ArrayList<Product>();
-        Cursor dataProduct = database.GetData("SELECT cart.id, product.id, product.image, product.name, product.price, cart.quantity FROM cart INNER JOIN product ON cart.idProduct = product.id");
-        while (dataProduct.moveToNext()) {
-            Product product = new Product(dataProduct.getInt(0), dataProduct.getInt(1), dataProduct.getInt(2), dataProduct.getString(3), dataProduct.getDouble(4), dataProduct.getInt(5));
-            Log.d("product", dataProduct.getString(2));
-            products.add(product);
+        List<OrderDetailDTO> odList = MyHomeActivity.orderDetailDTO;
+        List id = new ArrayList();
+        if(odList != null){
+            odList.stream().forEach(i -> id.add(i.getProductId()));
+            products = (List<Product>) MyHomeActivity.productDTOList.stream().filter(dto -> id.contains(dto.getId()));
         }
         return products;
     }
 
-    private double TongTien(){
+
+    private double TongTien() {
         double total = 0;
-        for(int i = 0; i < productList.size();i++){
+        for (int i = 0; i < productList.size(); i++) {
 
             total += productList.get(i).getPrice();
         }
