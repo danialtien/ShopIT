@@ -14,7 +14,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+<<<<<<< HEAD
 import android.widget.Toast;
+=======
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+>>>>>>> 7330db7a258f07815500409f972a5b08abacca93
 
 import com.trainh.assignmentprm.CartActivity;
 import com.trainh.assignmentprm.HomeActivity;
@@ -45,9 +51,13 @@ public class MyHomeActivity extends AppCompatActivity {
     ImageView cart;
     TextView tvNoti;
     ImageView imgMaps;
+<<<<<<< HEAD
 
     static OrdersDTO ordersDTO = null;
     static List<OrderDetailDTO> orderDetailDTO = null;
+=======
+    ImageView Notify;
+>>>>>>> 7330db7a258f07815500409f972a5b08abacca93
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +69,8 @@ public class MyHomeActivity extends AppCompatActivity {
         tvUsername.setText(username);
 
         rvComputer = findViewById(R.id.rvComputer);
+        Notify = (ImageView) findViewById(R.id.ivNotification);
+
         LinearLayoutManager linearLayoutManagerComputer = new LinearLayoutManager(this);
         linearLayoutManagerComputer.setOrientation(LinearLayoutManager.VERTICAL);
         rvComputer.setLayoutManager(linearLayoutManagerComputer);
@@ -91,8 +103,18 @@ public class MyHomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
 
+        Notify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = getIntent();
+                int cudId = intent.getIntExtra("customerid", 0);
+                Intent newIntent = new Intent(MyHomeActivity.this, MyNotificationActivity.class);
+                newIntent.putExtra("customerid", cudId);
+                startActivity(newIntent);
+            }
+        });
+    }
 
     private void callApiGetProduct() {
         ProductRepository.getService().getAll().enqueue(new Callback<List<ProductDTO>>() {
@@ -115,6 +137,7 @@ public class MyHomeActivity extends AppCompatActivity {
         });
     }
 
+<<<<<<< HEAD
     public OrdersDTO loadOrderAPI(CustomerDTO customerDTO) {
         if (customerDTO != null) {
             ordersDTO = new OrdersDTO();
@@ -166,8 +189,10 @@ public class MyHomeActivity extends AppCompatActivity {
         return orderDetailDTO;
     }
 
+=======
+>>>>>>> 7330db7a258f07815500409f972a5b08abacca93
     private void onClickGotoDetail(ProductDTO dto) {
-        Intent intent = new Intent(this, MyDetailsActivity.class);
+        Intent intent = new Intent(MyHomeActivity.this, MyDetailsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("object_product", dto);
         intent.putExtras(bundle);
