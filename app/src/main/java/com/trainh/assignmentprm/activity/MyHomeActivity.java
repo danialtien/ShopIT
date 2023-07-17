@@ -14,13 +14,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-<<<<<<< HEAD
 import android.widget.Toast;
-=======
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
->>>>>>> 7330db7a258f07815500409f972a5b08abacca93
 
 import com.trainh.assignmentprm.CartActivity;
 import com.trainh.assignmentprm.HomeActivity;
@@ -51,13 +48,9 @@ public class MyHomeActivity extends AppCompatActivity {
     ImageView cart;
     TextView tvNoti;
     ImageView imgMaps;
-<<<<<<< HEAD
-
     static OrdersDTO ordersDTO = null;
     static List<OrderDetailDTO> orderDetailDTO = null;
-=======
     ImageView Notify;
->>>>>>> 7330db7a258f07815500409f972a5b08abacca93
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +130,6 @@ public class MyHomeActivity extends AppCompatActivity {
         });
     }
 
-<<<<<<< HEAD
     public OrdersDTO loadOrderAPI(CustomerDTO customerDTO) {
         if (customerDTO != null) {
             ordersDTO = new OrdersDTO();
@@ -189,8 +181,6 @@ public class MyHomeActivity extends AppCompatActivity {
         return orderDetailDTO;
     }
 
-=======
->>>>>>> 7330db7a258f07815500409f972a5b08abacca93
     private void onClickGotoDetail(ProductDTO dto) {
         Intent intent = new Intent(MyHomeActivity.this, MyDetailsActivity.class);
         Bundle bundle = new Bundle();
