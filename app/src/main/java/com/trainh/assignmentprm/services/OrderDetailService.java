@@ -32,5 +32,5 @@ public interface OrderDetailService {
     Call<OrderDetailDTO> delete(@Path("id") int id);
 
     @GET(ROOT + "/getOrderDetailsByOrderId")
-    Call<List<OrderDetailDTO>> getOrderDetailByOrderID(@Query("orderId") int id);
+    Call<List<OrderDetailDTO>> getOrderDetailByOrderID(@Query("orderId") Integer id);
 }

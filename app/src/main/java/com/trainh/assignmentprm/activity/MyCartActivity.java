@@ -22,6 +22,7 @@ import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
 import com.trainh.assignmentprm.R;
+import com.trainh.assignmentprm.activity.adapter.CartAdapter2;
 import com.trainh.assignmentprm.adapter.CartAdapter;
 import com.trainh.assignmentprm.database.Database;
 import com.trainh.assignmentprm.entities.Product;
@@ -44,11 +45,11 @@ import java.util.Optional;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class MyCartActivity extends AppCompatActivity implements CartAdapter.SelectedProduct {
+public class MyCartActivity extends AppCompatActivity implements CartAdapter2.SelectedProduct {
 
-    CartAdapter cartAdapter;
+    CartAdapter2 cartAdapter;
     RecyclerView rvCart;
-    List<Product> productList;
+    List<ProductDTO> productList;
     TextView txtMoney;
     Button btnThanhToan;
 
@@ -66,7 +67,6 @@ public class MyCartActivity extends AppCompatActivity implements CartAdapter.Sel
         setContentView(R.layout.activity_my_cart);
         DecimalFormat formatter = new DecimalFormat("#,###,###");
 
-
         rvCart = (RecyclerView) findViewById(R.id.rvCart);
         txtMoney = (TextView) findViewById(R.id.txtMoney);
         btnThanhToan = (Button) findViewById(R.id.btnthanhtoan);
@@ -76,7 +76,7 @@ public class MyCartActivity extends AppCompatActivity implements CartAdapter.Sel
         rvCart.setLayoutManager(linearLayoutManagerCart);
         productList = getProductComputer();
         txtMoney.setText(formatter.format(TongTien()));
-        cartAdapter = new CartAdapter(productList, this);
+        cartAdapter = new CartAdapter2(productList, this);
         rvCart.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
 
@@ -228,13 +228,18 @@ public class MyCartActivity extends AppCompatActivity implements CartAdapter.Sel
         requestQueue.add(request);
     }
 
-    private List<Product> getProductComputer() {
-        List<Product> products = new ArrayList<Product>();
+    private List<ProductDTO> getProductComputer() {
+        List<ProductDTO> products = new ArrayList<ProductDTO>();
+        OrdersDTO orders = MyHomeActivity.ordersDTO;
         List<OrderDetailDTO> odList = MyHomeActivity.orderDetailDTO;
         List id = new ArrayList();
         if(odList != null){
             odList.stream().forEach(i -> id.add(i.getProductId()));
-            products = (List<Product>) MyHomeActivity.productDTOList.stream().filter(dto -> id.contains(dto.getId()));
+            MyHomeActivity.productDTOList.stream().forEach(dto -> {
+                if(id.contains(dto.getId())){
+                    products.add(dto);
+                }
+            });
         }
         return products;
     }
@@ -244,13 +249,13 @@ public class MyCartActivity extends AppCompatActivity implements CartAdapter.Sel
         double total = 0;
         for (int i = 0; i < productList.size(); i++) {
 
-            total += productList.get(i).getPrice();
+            total += productList.get(i).getUnitPrice().doubleValue();
         }
         return total;
     }
 
     @Override
-    public void selectedProduct(Product product) {
+    public void selectedProduct(ProductDTO product) {
 
     }
 

@@ -73,9 +73,8 @@ public class MyHomeActivity extends AppCompatActivity {
 
 
         productDTOList = new ArrayList<>();
+
         callApiGetProduct();
-
-
         tvNoti.setText(String.valueOf(productDTOList.size()));
 
         imgMaps.setOnClickListener(new View.OnClickListener() {
@@ -86,16 +85,16 @@ public class MyHomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        loadOrderAPI(MyMainActivity.customerDTO.getId());
 
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadOrderAPI(MyMainActivity.customerDTO);
-                loadOrderDetailAPI(ordersDTO);
                 Intent intent = new Intent(MyHomeActivity.this, MyCartActivity.class);
                 startActivity(intent);
             }
         });
+
 
         Notify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +104,28 @@ public class MyHomeActivity extends AppCompatActivity {
                 Intent newIntent = new Intent(MyHomeActivity.this, MyNotificationActivity.class);
                 newIntent.putExtra("customerid", cudId);
                 startActivity(newIntent);
+            }
+        });
+    }
+
+    private void loadOrderAPI(Integer id) {
+        OrderRepository.getService().getByCustomerId(id).enqueue(new Callback<OrdersDTO>() {
+            @Override
+            public void onResponse(Call<OrdersDTO> call, Response<OrdersDTO> response) {
+                ordersDTO = response.body();
+                Log.i("Response body", response.body().toString());
+                Log.i("Response message", response.message());
+
+                if (response.isSuccessful()) {
+                    loadOrderDetailAPI(ordersDTO);
+                    Log.i("Get customer cart Successful", response.body().toString());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrdersDTO> call, Throwable t) {
+
             }
         });
     }
@@ -130,36 +151,7 @@ public class MyHomeActivity extends AppCompatActivity {
         });
     }
 
-    public OrdersDTO loadOrderAPI(CustomerDTO customerDTO) {
-        if (customerDTO != null) {
-            ordersDTO = new OrdersDTO();
-            OrderRepository.getService().getByCustomerId(customerDTO.getId()).enqueue(new Callback<OrdersDTO>() {
-                @Override
-                public void onResponse(Call<OrdersDTO> call, Response<OrdersDTO> response) {
-                    ordersDTO = response.body();
-                    if (ordersDTO == null) {
-                        Toast.makeText(MyHomeActivity.this, "Error to read tank information",
-                                Toast.LENGTH_LONG).show();
-                        return;
-                    }
 
-                    Log.i("Response body", response.body().toString());
-                    Log.i("Response message", response.message());
-
-                    if (response.isSuccessful()) {
-                        Log.i("Get customer cart Successful", response.body().toString());
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<OrdersDTO> call, Throwable t) {
-
-                }
-            });
-        }
-        return ordersDTO;
-    }
 
     public  List<OrderDetailDTO> loadOrderDetailAPI(OrdersDTO ordersDTO) {
         if (ordersDTO.getId() != null) {

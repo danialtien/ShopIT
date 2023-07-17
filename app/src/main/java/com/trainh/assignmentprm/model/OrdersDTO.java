@@ -8,15 +8,12 @@ import java.time.LocalDate;
 public class OrdersDTO implements Serializable {
     private Integer id;
     private Integer customerId;
-    private LocalDate orderDate;
+    private String orderDate;
     private String shippingAddress;
     private BigDecimal totalPrice;
     private String status;
 
-    public OrdersDTO() {
-    }
-
-    public OrdersDTO(Integer id, Integer customerId, LocalDate orderDate, String shippingAddress, BigDecimal totalPrice, String status) {
+    public OrdersDTO(Integer id, Integer customerId, String orderDate, String shippingAddress, BigDecimal totalPrice, String status) {
         this.id = id;
         this.customerId = customerId;
         this.orderDate = orderDate;
@@ -41,11 +38,11 @@ public class OrdersDTO implements Serializable {
         this.customerId = customerId;
     }
 
-    public LocalDate getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDate orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -73,11 +70,4 @@ public class OrdersDTO implements Serializable {
         this.status = status;
     }
 
-    public OrdersDTO(Integer customerId, LocalDate orderDate, String shippingAddress, BigDecimal totalPrice, String status) {
-        this.customerId = customerId;
-        this.orderDate = orderDate;
-        this.shippingAddress = shippingAddress;
-        this.totalPrice = totalPrice;
-        this.status = status;
-    }
 }
