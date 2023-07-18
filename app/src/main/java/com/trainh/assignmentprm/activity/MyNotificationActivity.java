@@ -37,6 +37,7 @@ public class MyNotificationActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ImageView ImgGoBack;
     int customerId;
+    String username;
 
 
     @Override
@@ -56,13 +57,14 @@ public class MyNotificationActivity extends AppCompatActivity {
         imgNotify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NotificationHelper.SendNotification(MyNotificationActivity.this,"aaaa", "bbbb");
+                NotificationHelper.SendNotification(MyNotificationActivity.this,"You are order success ", "You are payment success 10 PC HP I4 Core 7x");
             }
         });
         ImgGoBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                Intent  newIntent = new Intent(MyNotificationActivity.this, MyHomeActivity.class);
+               newIntent.putExtra("username", username);
                startActivity(newIntent);
             }
         });
@@ -70,6 +72,7 @@ public class MyNotificationActivity extends AppCompatActivity {
 
     private void Mapping(Intent intent) {
         customerId = intent.getIntExtra("customerid", 0);
+        username = intent.getStringExtra("username");
         notificationList = new ArrayList<>();
         recyclerView = (RecyclerView) findViewById(R.id.rv_notification);
         ImgGoBack = (ImageView) findViewById(R.id.img_go_back);

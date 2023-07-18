@@ -103,6 +103,7 @@ public class MyHomeActivity extends AppCompatActivity {
                 int cudId = intent.getIntExtra("customerid", 0);
                 Intent newIntent = new Intent(MyHomeActivity.this, MyNotificationActivity.class);
                 newIntent.putExtra("customerid", cudId);
+                newIntent.putExtra("username", username);
                 startActivity(newIntent);
             }
         });
