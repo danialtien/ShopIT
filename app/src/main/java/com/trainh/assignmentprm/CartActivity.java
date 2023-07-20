@@ -39,7 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CartActivity extends AppCompatActivity implements CartAdapter.SelectedProduct{
+public class
+CartActivity extends AppCompatActivity implements CartAdapter.SelectedProduct{
 
     Database database;
     CartAdapter cartAdapter;

@@ -26,8 +26,8 @@ public interface OrderService {
     @POST(ROOT + "")
     Call<OrdersDTO> create(@Body OrdersDTO dto);
 
-    @PUT(ROOT + "/{id}")
-    Call<OrdersDTO> update(@Path("id") int id, @Body OrdersDTO dto);
+    @PUT(ROOT + "")
+    Call<OrdersDTO> update(@Query("id") int id, @Body OrdersDTO dto);
 
     @DELETE(ROOT + "/{id}")
     Call<OrdersDTO> delete(@Path("id") int id);

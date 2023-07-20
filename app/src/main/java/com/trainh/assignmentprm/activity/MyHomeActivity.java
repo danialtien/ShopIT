@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.trainh.assignmentprm.CartActivity;
+import com.trainh.assignmentprm.DetailsActivity;
 import com.trainh.assignmentprm.HomeActivity;
 import com.trainh.assignmentprm.R;
 import com.trainh.assignmentprm.activity.adapter.ProductAdapter2;
@@ -39,9 +40,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MyHomeActivity extends AppCompatActivity {
+public class MyHomeActivity extends AppCompatActivity implements IClickProductListener{
 
-    static List<ProductDTO> productDTOList;
+    public static List<ProductDTO> productDTOList;
     RecyclerView rvComputer;
     ProductAdapter2 productAdapter;
     TextView tvUsername;
@@ -49,15 +50,14 @@ public class MyHomeActivity extends AppCompatActivity {
     TextView tvNoti;
     ImageView imgMaps;
     public static OrdersDTO ordersDTO = null;
-    static List<OrderDetailDTO> orderDetailDTO = null;
+    public static List<OrderDetailDTO> orderDetailDTO = new ArrayList<>();
     ImageView Notify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home2);
-        Intent intent = getIntent();
-        String username = intent.getStringExtra("username");
+        String username = MyMainActivity.customerDTO.getFullName();
         tvUsername = (TextView) findViewById(R.id.tvUsername);
         tvUsername.setText(username);
 
@@ -85,13 +85,20 @@ public class MyHomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        loadOrderAPI(MyMainActivity.customerDTO.getId());
+        if(MyMainActivity.customerDTO != null){
+            loadOrderAPI(MyMainActivity.customerDTO.getId());
+        }
+
 
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyHomeActivity.this, MyCartActivity.class);
-                startActivity(intent);
+                if (ordersDTO != null && ordersDTO.getStatus().equals("Pending") && orderDetailDTO != null) {
+                    Intent intent = new Intent(MyHomeActivity.this, MyCartActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(MyHomeActivity.this, "Cart is empty!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -113,13 +120,14 @@ public class MyHomeActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<OrdersDTO> call, Response<OrdersDTO> response) {
                 ordersDTO = response.body();
-                Log.i("Response body", response.body().toString());
-                Log.i("Response message", response.message());
-
-                if (response.isSuccessful()) {
-                    loadOrderDetailAPI(ordersDTO);
-                    Log.i("Get customer cart Successful", response.body().toString());
-
+                if (ordersDTO != null) {
+                    Log.i("Response body", ordersDTO.toString());
+                    if (response.isSuccessful()) {
+                        loadOrderDetailAPI(ordersDTO);
+//                        if (response.body() != null) {
+//                            Log.i("Get customer cart Successful", ordersDTO.toString());
+//                        }
+                    }
                 }
             }
 
@@ -151,24 +159,24 @@ public class MyHomeActivity extends AppCompatActivity {
         });
     }
 
-
-
     public static List<OrderDetailDTO> loadOrderDetailAPI(OrdersDTO ordersDTO) {
-        if (ordersDTO.getId() != null) {
-            orderDetailDTO = new ArrayList<>();
-            OrderDetailRepository.getService().getOrderDetailByOrderID(ordersDTO.getId()).enqueue(new Callback<List<OrderDetailDTO>>() {
-                @Override
-                public void onResponse(Call<List<OrderDetailDTO>> call, Response<List<OrderDetailDTO>> response) {
-                    if (response.isSuccessful()) {
-                        orderDetailDTO = response.body();
+        if(ordersDTO != null) {
+            if (ordersDTO.getId() != null) {
+                orderDetailDTO = new ArrayList<>();
+                OrderDetailRepository.getService().getOrderDetailByOrderID(ordersDTO.getId()).enqueue(new Callback<List<OrderDetailDTO>>() {
+                    @Override
+                    public void onResponse(Call<List<OrderDetailDTO>> call, Response<List<OrderDetailDTO>> response) {
+                        if (response.isSuccessful()) {
+                            orderDetailDTO = response.body();
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<List<OrderDetailDTO>> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<List<OrderDetailDTO>> call, Throwable t) {
 
-                }
-            });
+                    }
+                });
+            }
         }
         return orderDetailDTO;
     }
@@ -178,6 +186,15 @@ public class MyHomeActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable("object_product", dto);
         intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClickItemProduct(ProductDTO product) {
+        Log.d("product", product.getProductName());
+        Intent intent = new Intent(MyHomeActivity.this, MyDetailsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("data", product);
         startActivity(intent);
     }
 }

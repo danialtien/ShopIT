@@ -7,14 +7,11 @@ import java.time.LocalDate;
 public class PaymentDTO implements Serializable {
     private Integer id;
     private Integer orderId;
-    private LocalDate paymentDate;
+    private String paymentDate;
     private BigDecimal amount;
     private String paymentMethod;
 
-    public PaymentDTO() {
-    }
-
-    public PaymentDTO(Integer id, Integer orderId, LocalDate paymentDate, BigDecimal amount, String paymentMethod) {
+    public PaymentDTO(Integer id, Integer orderId, String paymentDate, BigDecimal amount, String paymentMethod) {
         this.id = id;
         this.orderId = orderId;
         this.paymentDate = paymentDate;
@@ -38,11 +35,11 @@ public class PaymentDTO implements Serializable {
         this.orderId = orderId;
     }
 
-    public LocalDate getPaymentDate() {
+    public String getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(LocalDate paymentDate) {
+    public void setPaymentDate(String paymentDate) {
         this.paymentDate = paymentDate;
     }
 

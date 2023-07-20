@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import com.trainh.assignmentprm.R;
 import com.trainh.assignmentprm.activity.my_interface.IClickProductListener;
+import com.trainh.assignmentprm.adapter.ProductAdapter;
+import com.trainh.assignmentprm.entities.Product;
 import com.trainh.assignmentprm.model.ProductDTO;
 
 import java.util.List;
@@ -61,7 +63,6 @@ public class ProductAdapter2 extends RecyclerView.Adapter<ProductAdapter2.Produc
          return 0;
     }
 
-
     public class ProductViewHolder extends RecyclerView.ViewHolder {
     // Khai bao thành phần có trong layout item
 
@@ -76,6 +77,12 @@ public class ProductAdapter2 extends RecyclerView.Adapter<ProductAdapter2.Produc
             ivProduct = itemView.findViewById(R.id.ivProduct);
             tvName = itemView.findViewById(R.id.tvName);
             tvPrice = itemView.findViewById(R.id.tvPrice);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    productListener.onClickItemProduct(productList.get(getAdapterPosition()));
+                }
+            });
         }
     }
 }

@@ -16,6 +16,7 @@ import com.squareup.picasso.Picasso;
 import com.trainh.assignmentprm.R;
 import com.trainh.assignmentprm.activity.MyCartActivity;
 import com.trainh.assignmentprm.activity.MyHomeActivity;
+import com.trainh.assignmentprm.activity.MyMainActivity;
 import com.trainh.assignmentprm.model.OrderDetailDTO;
 import com.trainh.assignmentprm.model.ProductDTO;
 import com.trainh.assignmentprm.repository.OrderDetailRepository;
@@ -60,17 +61,15 @@ public class CartAdapter2 extends RecyclerView.Adapter<CartAdapter2.CartAdapterV
         DecimalFormat formatter = new DecimalFormat("#,###,###");
         holder.cartName.setText(product.getProductName());
         holder.cartPrice.setText(formatter.format(detailDTO.getPrice()));
-
-        String imageUrl = product.getUrlImage();
-        Picasso.get().load(imageUrl).into(holder.item_giohang_image);
-
         holder.cartQuantity.setText(String.valueOf(detailDTO.getQuantity()));
         holder.cartTotal.setText(formatter.format(new BigDecimal(detailDTO.getQuantity()).multiply( detailDTO.getPrice()))); // Update total
         holder.bntDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                detailDTOList.remove(position);
                 UpdateQuantity(detailDTO, 0);
                 ((MyCartActivity)context).finish();
+                MyHomeActivity.loadOrderAPI(MyMainActivity.customerDTO.getId());
                 Intent intent = new Intent((MyCartActivity)context, MyCartActivity.class);
                 ((MyCartActivity)context).startActivity(intent);
             }
@@ -78,7 +77,11 @@ public class CartAdapter2 extends RecyclerView.Adapter<CartAdapter2.CartAdapterV
         holder.bntTru.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateQuantity(detailDTO, -1);
+                if(detailDTO.getQuantity() == 1){
+                    UpdateQuantity(detailDTO, -1);
+                    MyHomeActivity.loadOrderAPI(MyMainActivity.customerDTO.getId());
+                    notifyDataSetChanged();
+                }
                 ((MyCartActivity)context).finish();
                 Intent intent = new Intent((MyCartActivity)context, MyCartActivity.class);
                 ((MyCartActivity)context).startActivity(intent);
@@ -87,7 +90,12 @@ public class CartAdapter2 extends RecyclerView.Adapter<CartAdapter2.CartAdapterV
         holder.bntCong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateQuantity(detailDTO, 1);
+                int unitInStock = MyHomeActivity.productDTOList.stream().filter(x-> x.getId() == detailDTO.getProductId()).findFirst().get().getUnitInStock();
+                if (unitInStock > detailDTO.getQuantity()) {
+                    UpdateQuantity(detailDTO, 1);
+                    MyHomeActivity.loadOrderAPI(MyMainActivity.customerDTO.getId());
+                    notifyDataSetChanged();
+                }
                 ((MyCartActivity)context).finish();
                 Intent intent = new Intent((MyCartActivity)context, MyCartActivity.class);
                 ((MyCartActivity)context).startActivity(intent);
@@ -111,7 +119,6 @@ public class CartAdapter2 extends RecyclerView.Adapter<CartAdapter2.CartAdapterV
                 if (response.isSuccessful()) {
                     temp.add(response.body());
                 }
-
             }
 
             @Override
@@ -122,7 +129,6 @@ public class CartAdapter2 extends RecyclerView.Adapter<CartAdapter2.CartAdapterV
         if (temp.isEmpty()) {
             return null;
         }
-        MyHomeActivity.loadOrderAPI(MyHomeActivity.ordersDTO.getId());
         return temp.get(0);
     }
 

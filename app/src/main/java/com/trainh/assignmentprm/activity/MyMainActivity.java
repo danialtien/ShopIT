@@ -38,7 +38,7 @@ public class MyMainActivity extends AppCompatActivity {
 
     public static List<CustomerDTO> listCustomer;
 
-    static CustomerDTO customerDTO;
+    public static CustomerDTO customerDTO;
 
 
     @Override
