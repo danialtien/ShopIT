@@ -110,6 +110,7 @@ public class MyHomeActivity extends AppCompatActivity implements IClickProductLi
                 int cudId = intent.getIntExtra("customerid", 0);
                 Intent newIntent = new Intent(MyHomeActivity.this, MyNotificationActivity.class);
                 newIntent.putExtra("customerid", cudId);
+                newIntent.putExtra("username", username);
                 startActivity(newIntent);
             }
         });
